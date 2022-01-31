@@ -23,16 +23,16 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $a)
     {
-        $fields = $request->validate([
-            'name' => 'required|string',
+        $fields = $a->validate([
+            'nama' => 'required|string',
             'email' => 'required|string|unique:users,email',
             'password' => 'required|string|confirmed'
         ]);
 
         $user = ProfileSiswa::create([
-            'name' => $fields['name'],
+            'nama' => $fields['nama'],
             'email' => $fields['email'],
             'password' => bcrypt($fields['password'])
         ]);
@@ -41,7 +41,7 @@ class AuthController extends Controller
         $response = [
             'user' => $user,
             'token' => $token,
-            'reg' => 'true'
+            'status' => success
         ];
 
         return response($response, 201);
@@ -60,22 +60,23 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
 
-            //check email
-            $user = ProfileSiswa::where('email', $fields['email'])->first();
+        // check email
+        $user = ProfileSiswa::where('email', $fields['email'])->first(); 
+        // check Password
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
+            return response([
+                'message' => 'bad gateway'
+            ], 401);
+        }
 
-            if($user && Hash::check($fields['password'], $user->password)){
-                $token = $user->createToken('token')-> plainTextToken;
-                $response = [
-                    'user' => $user,
-                    'token' => $token,
-                    'log' => 'true'
-                ];
-            }
-            else{
-                return response([
-                    'message' => 'bad gateway'
-                    ], 401);
-            }
+        $token = $user->createToken('token')->plainTextToken;
+        $response = [
+            'user' => $user,
+            'token' => $token,
+            'log' => 'true'
+        ];
+
+        return response($response, 201);
     }
 
     /**
@@ -118,8 +119,11 @@ class AuthController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy()
     {
-        //
+        Auth()->user()->tokens()->delete();
+        return[
+            'message' => 'logged out'
+        ];
     }
 }
