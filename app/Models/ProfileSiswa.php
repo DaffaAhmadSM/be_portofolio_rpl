@@ -11,7 +11,7 @@ class ProfileSiswa extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
     protected $fillable = [
-        'name',
+        'nama',
         'email',
         'password',
     ];
@@ -24,6 +24,8 @@ class ProfileSiswa extends Model
     protected $hidden = [
         'password',
         'remember_token',
+        'created_at',
+        'updated_at'
     ];
 
     /**
