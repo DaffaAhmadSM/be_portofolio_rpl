@@ -14,6 +14,7 @@ class ProfileSiswa extends Model
         'nama',
         'email',
         'password',
+        'divisi_id',
     ];
 
     /**

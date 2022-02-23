@@ -28,12 +28,14 @@ class AuthController extends Controller
         $fields = $a->validate([
             'nama' => 'required|string',
             'email' => 'required|string|unique:users,email',
-            'password' => 'required|string|confirmed'
+            'password' => 'required|string|confirmed',
+            'divisi_id' => 'required|integer',
         ]);
 
         $user = ProfileSiswa::create([
             'nama' => $fields['nama'],
             'email' => $fields['email'],
+            'divisi_id' => $fields['divisi_id'],
             'password' => bcrypt($fields['password'])
         ]);
 
@@ -41,7 +43,7 @@ class AuthController extends Controller
         $response = [
             'user' => $user,
             'token' => $token,
-            'status' => success
+            'status' => "success"
         ];
 
         return response($response, 201);

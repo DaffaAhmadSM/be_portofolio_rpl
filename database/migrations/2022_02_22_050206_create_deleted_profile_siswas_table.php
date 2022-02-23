@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProfileSiswasTable extends Migration
+class CreateDeletedProfileSiswasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateProfileSiswasTable extends Migration
      */
     public function up()
     {
-        Schema::create('profile_siswas', function (Blueprint $table) {
+        Schema::create('deleted_profile_siswas', function (Blueprint $table) {
             $table->id();
             $table -> string('email');
             $table -> string('nama');
             $table -> string('password');
-            $table -> foreignId('divisi_id')->onDelete('cascade');
             $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreateProfileSiswasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profile_siswas');
+        Schema::dropIfExists('deleted_profile_siswas');
     }
 }
