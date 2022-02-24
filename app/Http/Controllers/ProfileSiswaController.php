@@ -79,8 +79,7 @@ class ProfileSiswaController extends Controller
      * @param  \App\Models\ProfileSiswa  $profileSiswa
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProfileSiswa $profileSiswa)
-    {
-        //
-    }
+    public function destroy($id)
+    {}
+        
 }

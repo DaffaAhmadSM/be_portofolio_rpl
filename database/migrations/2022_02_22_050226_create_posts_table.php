@@ -17,8 +17,7 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('judul');
             $table->string('slug');
-            $table->foreignId('profile_siswa_id')->onDelete('cascade');
-            $table->foreignId('divisi_id')->onDelete('cascade');
+            $table->foreignId('profile_siswa_id')->constrained('profile_siswas')->onDelete('cascade');
             $table->string('link');
             $table->string('deskripsi');
             $table->timestamps();

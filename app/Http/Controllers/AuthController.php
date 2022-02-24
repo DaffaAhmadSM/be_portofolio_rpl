@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProfileSiswa;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -15,7 +16,8 @@ class AuthController extends Controller
      */
     public function index()
     {
-        //
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'siswa']);
     }
 
     /**
@@ -26,8 +28,8 @@ class AuthController extends Controller
     public function create(Request $a)
     {
         $fields = $a->validate([
-            'nama' => 'required|string',
-            'email' => 'required|string|unique:users,email',
+            'nama' => 'required|string|unique:profile_siswas',
+            'email' => 'required|string|unique:profile_siswas,email',
             'password' => 'required|string|confirmed',
             'divisi_id' => 'required|integer',
         ]);
@@ -38,6 +40,7 @@ class AuthController extends Controller
             'divisi_id' => $fields['divisi_id'],
             'password' => bcrypt($fields['password'])
         ]);
+        $user->assignRole('siswa');
 
         $token = $user->createToken('token')->plainTextToken;
         $response = [

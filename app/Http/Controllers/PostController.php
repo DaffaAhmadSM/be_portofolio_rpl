@@ -55,7 +55,6 @@ class PostController extends Controller
         $post->link = $request->link;
         $post->deskripsi = $request->deskripsi;
         $post->profile_siswa_id = Auth::user()->id;
-        $post->divisi_id = Auth::user()->divisi_id;
         $post->save();
 
         $images = [];
@@ -122,15 +121,13 @@ class PostController extends Controller
     public function destroy($id)
     {
        $post = Post::find($id);
-       $image_model = Image::where('post_id', $id)->first();
-        if ($post) {
-            Post::destroy($id);
-            Image::where('post_id', $id)->delete();
-            $image = json_decode($image_model->image);
-            foreach ($image as $img) {
-                File::delete('images/' . $img);
-            }
-            return $image;
+       if (Auth::user()->id == $post->profile_siswa_id) {
+           if ($post) {
+               Post::destroy($id);
+               $image = json_decode($image_model->image);
+               foreach ($image as $img) {
+                   File::delete('images/' . $img);
+                }
             return response()->json([
                 'status' => 'success',
                 'message' => 'Post berhasil dihapus'
@@ -141,6 +138,12 @@ class PostController extends Controller
                 'message' => 'Post tidak ditemukan'
             ], 404);
         }
+    } else {
+        return  response()->json([
+            'status' => 'error',
+            'message' => 'Anda tidak memiliki akses'
+        ], 401);
+    }
  }
-        
+ 
 }
