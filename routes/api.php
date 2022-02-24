@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +16,11 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::group(['middleware' => ['auth:sanctum']], function(){
-    Route::delete('/logout', [AuthController::class, 'destroy']);
-});
+    Route::group(['middleware' => ['auth:sanctum']], function(){
+        Route::delete('/logout', [AuthController::class, 'destroy']);
+        Route::post('/post', [PostController::class, 'store']);
+        Route::delete('/post/{id}', [PostController::class, 'destroy']);
+    });
 
-Route::post('/register', [AuthController::class, 'create']);
-Route::get('/login', [AuthController::class, 'store']);
+    Route::post('/register', [AuthController::class, 'create']);
+    Route::post('/login', [AuthController::class, 'store']);
