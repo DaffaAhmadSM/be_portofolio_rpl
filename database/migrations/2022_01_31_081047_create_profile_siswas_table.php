@@ -19,6 +19,7 @@ class CreateProfileSiswasTable extends Migration
             $table -> string('nama');
             $table -> string('password');
             $table -> foreignId('divisi_id');
+            $table -> string('path_directory');
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->rememberToken();

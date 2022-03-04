@@ -20,6 +20,7 @@ class ProfileSiswa extends Model
         'email',
         'password',
         'divisi_id',
+        'path_directory',
     ];
 
     /**

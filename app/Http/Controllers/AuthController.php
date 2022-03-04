@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use App\Models\ProfileSiswa;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -38,7 +39,8 @@ class AuthController extends Controller
             'nama' => $fields['nama'],
             'email' => $fields['email'],
             'divisi_id' => $fields['divisi_id'],
-            'password' => bcrypt($fields['password'])
+            'password' => bcrypt($fields['password']),
+            'path_directory' => Str::random(10).'_'.$fields['nama'],
         ]);
         $user->assignRole('siswa');
 
