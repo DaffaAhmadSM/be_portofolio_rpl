@@ -85,14 +85,10 @@ class AccountController extends Controller
     public function destroy($id)
     {
         if (Auth::user()->id == $id) {
-            $post = Post::where('profile_siswa_id', $id)->first();
-            if($image_model = Image::where('post_id', $post->id)->first()){
-                $image = json_decode($image_model->image);
-                foreach ($image as $img) {
-                    File::delete('images/' . $img);
-                }
-            }
             $profile = ProfileSiswa::find($id);
+            if (public_path('images/'.$profile->path_directory)) {
+                File::deleteDirectory(public_path('images/'.$profile->path_directory));
+            }
             $profile->delete();
             return response()->json([
                 'status' => 'success',

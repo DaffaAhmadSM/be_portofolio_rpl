@@ -61,7 +61,7 @@ class PostController extends Controller
         if ($request->hasFile('image')) {
             foreach ($request->file('image') as $image) {
                 $name = time() . Str::random(10) . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('images'), $name);
+                $image->move(public_path('images/'.Auth::user()->path_directory), $name);
                 $images[] = $name;
             }
         }
